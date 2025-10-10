@@ -1,6 +1,9 @@
-use async_graphql::{EmptyMutation, EmptySubscription, Object, Schema, SimpleObject};
+use async_graphql::{
+    ComplexObject, EmptyMutation, EmptySubscription, Object, Schema, SimpleObject,
+};
 
 #[derive(SimpleObject)]
+#[graphql(complex)]
 #[allow(dead_code)]
 struct MyObject {
     /// Value a docコメントはSDLに反映される
@@ -10,6 +13,13 @@ struct MyObject {
 
     #[graphql(skip)]
     c: i32,
+}
+
+#[ComplexObject]
+impl MyObject {
+    async fn e(&self) -> String {
+        "Hello, calculated value".into()
+    }
 }
 
 struct Query;
@@ -35,7 +45,7 @@ async fn main() {
     // スキーマを閲覧する
     println!("{}", schema.sdl());
 
-    let res = schema.execute("{ hoge { a b } }").await;
+    let res = schema.execute("{ hoge { a b e } }").await;
     assert!(res.errors.is_empty());
     dbg!(res);
     let res = schema.execute("{ hoge { a } }").await;

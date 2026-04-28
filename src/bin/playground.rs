@@ -5,7 +5,10 @@ use async_graphql::{
     http::{GraphQLPlaygroundConfig, playground_source},
 };
 use axum::{
-    http::Method, response::{Html, IntoResponse}, routing::get, Extension, Json, Router
+    Extension, Json, Router,
+    http::Method,
+    response::{Html, IntoResponse},
+    routing::get,
 };
 use serde::Deserialize;
 use sqlx::sqlite::SqlitePoolOptions;
